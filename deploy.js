@@ -1,7 +1,6 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const { Web3 } = require('web3');
-const { abi, evm } = require('./compile');
-const compiledFactory = require('./build/CampaignFactory.json')
+const compiledCampaignFactory = require('./build/CampaignFactory.json')
 
 // ** Interface and bytecode in replaced with abi and evm.bytecode.object respectively. **
 
@@ -13,15 +12,15 @@ const provider = new HDWalletProvider(
 );
 const web3 = new Web3(provider);
 
-if (abi && evm) {
+if (compiledCampaignFactory) {
 
     const deploy = async () => {
         const accounts = await web3.eth.getAccounts();
 
         console.log('Attempting to deploy from account', accounts[0]);
 
-        const result = await new web3.eth.Contract(compiledCampaignFactory.abi) //await new web3.eth.Contract(interface)
-            .deploy({ data: compiledCampaignFactory.evm.bytecode.object })      // {data: bytecode}
+        const result = await new web3.eth.Contract(JSON.parse(compiledCampaignFactory.interface)) //await new web3.eth.Contract(interface)
+            .deploy({ data: compiledCampaignFactory.bytecode })      // {data: bytecode}
             .send({ gas: '1000000', from: accounts[0] });
 
         console.log('Contract deployed to', result.options.address);
@@ -30,5 +29,5 @@ if (abi && evm) {
     deploy();
 }
 else {
-    console.log("ABI & EVM NOT FOUND")
+    console.log("Campaign factory not compiled");
 }
