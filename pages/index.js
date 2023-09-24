@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import factory from '../factory';
 
+
+
 const NewCampaign = () => {
 
     const [campaigns, setCampaigns] = useState([])
@@ -18,6 +20,7 @@ const NewCampaign = () => {
         <div>
             <h1>This is campaign page</h1>
             <h1>Total campaigns {campaigns.length}</h1>
+            <h1>Campaign address : '{campaigns[0]}'</h1>
         </div>
     );
 };
